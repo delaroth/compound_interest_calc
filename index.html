@@ -12,7 +12,7 @@
             margin-top: 60px
         }
 
-        .input-group {
+        .flex {
             display: flex;
         }
 
@@ -20,11 +20,6 @@
         #flex-right {
             display: flex;
             justify-content: flex-start;
-        }
-
-        #investment_timespan {
-            width: 80vw;
-            max-width: 250px;
         }
     </style>
 </head>
@@ -41,7 +36,7 @@
                 <div class="form-group">
                     <label for="initial_deposit">סכום הפקדה ראשוני</label>
                     <div class="row">
-                        <div class="input-group col-md-6 col-sm-8">
+                        <div class="input-group col-md-6 col-sm-8 flex">
                             <div class="input-group-prepend">
                                 <button class="btn btn-primary" type="button" data-counter="sub"
                                     data-field="initial_deposit">−</button>
@@ -60,7 +55,7 @@
                 <div class="form-group">
                     <label for="contribution_amount">הפקדות חודשיות</label>
                     <div class="row">
-                        <div class="input-group col-md-6 col-sm-8">
+                        <div class="input-group col-md-6 col-sm-8 flex">
                             <div class="input-group-prepend">
                                 <button class="btn btn-primary" type="button" data-counter="sub"
                                     data-field="contribution_amount">−</button>
@@ -91,18 +86,30 @@
                 <div class="form-group" id='investment_timespan_box'>
                     <label for="investment_timespan">מספר שנות ההפקדה</label>
                     <div class="row" id='flex-right'>
-                        <div class="col-md-6 col-sm-8">
-                            <input class="form-control" id="investment_timespan" type="range" name="investment_timespan"
-                                min="2" max="50" step="1" value="5">
+                        <div class="input-group col-md-6 col-sm-8 flex">
+                            <!-- <input class="form-control" id="investment_timespan" type="text" name="investment_timespan"
+                                min="1" max="50" step="1" value="5"> -->
+                            <div class="input-group-prepend">
+                                <button class="btn btn-primary" type="button" data-counter="sub"
+                                    data-field="investment_timespan">−</button>
+                            </div>
+                            <input class="form-control text-center" id="investment_timespan" type="text"
+                                name="investment_timespan" min="2" max="250" step="1" value="5 שנים" data-value="5"
+                                data-append=" שנים ">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" data-counter="add"
+                                    data-field="investment_timespan">+</button>
+                            </div>
                         </div>
                     </div>
-                    <span id="investment_timespan_text">5 שנים</span>
+                    <span id="investment_timespan_text" style="visibility:collapse;">5 שנים</span>
+
                 </div>
 
                 <div class="form-group">
-                    <label for="estimated_return">ריבית משוארת באחוזים</label>
+                    <label for="estimated_return">ריבית משוערת באחוזים</label>
                     <div class="row">
-                        <div class="input-group col-md-6 col-sm-8">
+                        <div class="input-group col-md-6 col-sm-8 flex">
                             <div class="input-group-prepend">
                                 <button class="btn btn-primary" type="button" data-counter="sub"
                                     data-field="estimated_return">−</button>
@@ -160,7 +167,7 @@
                     max = parseFloat(element.getAttribute('max')),
                     step = parseFloat(element.getAttribute('step')) || 1,
                     oldValue = element.dataset.value || element.defaultValue || 0,
-                    newValue = parseFloat(element.value.replace(/\$/, ''));
+                    newValue = parseFloat(element.value.replace(/\₪/, ''));
 
                 if (isNaN(parseFloat(newValue))) {
                     newValue = oldValue;
@@ -181,7 +188,7 @@
             }
 
             function getChartData() {
-                var P = parseFloat(initial_deposit.dataset.value), // Principal
+                let P = parseFloat(initial_deposit.dataset.value), // Principal
                     r = parseFloat(estimated_return.dataset.value / 100), // Annual Interest Rate
                     c = parseFloat(contribution_amount.dataset.value), // Contribution Amount
                     n = parseInt(document.querySelector('[name="compound_period"]:checked').value), // Compound Period
@@ -190,18 +197,18 @@
                     currentYear = (new Date()).getFullYear()
                     ;
 
-                var labels = [];
+                let labels = [];
                 for (var year = currentYear; year < currentYear + t; year++) {
                     labels.push(year);
                 }
 
-                var principal_dataset = {
+                let principal_dataset = {
                     label: 'Total Principal',
                     backgroundColor: 'rgb(0, 123, 255)',
                     data: []
                 };
 
-                var interest_dataset = {
+                let interest_dataset = {
                     label: "Total Interest",
                     backgroundColor: 'rgb(23, 162, 184)',
                     data: []
@@ -253,13 +260,14 @@
             });
 
             investment_timespan.addEventListener('change', function () {
-                investment_timespan_text.innerHTML = this.value + ' שנים';
-                updateChart();
+                updateValue(this)
+                // investment_timespan_text.innerHTML = this.value + ' שנים';
+                // updateChart();
             });
 
-            investment_timespan.addEventListener('input', function () {
-                investment_timespan_text.innerHTML = this.value + ' שנים';
-            });
+            // investment_timespan.addEventListener('input', function () {
+            //     investment_timespan_text.innerHTML = this.value + ' שנים';
+            // });
 
             var radios = document.querySelectorAll('[name="contribution_period"], [name="compound_period"]');
             for (var j = 0; j < radios.length; j++) {
@@ -282,9 +290,10 @@
 
             var ctx = document.getElementById('myChart').getContext('2d'),
                 chart = new Chart(ctx, {
-                    type: 'bar',
+                    type: 'line',
                     data: getChartData(),
                     options: {
+
                         legend: {
                             display: false
                         },
