@@ -115,7 +115,7 @@
                                     data-field="estimated_return">−</button>
                             </div>
                             <input class="form-control text-center" id="estimated_return" type="text"
-                                name="estimated_return" min="0" max="50" step="0.25" value="5.00%" data-value="5.00"
+                                name="estimated_return" min="0" max="50" step="0.25" value="5%" data-value="5.00"
                                 data-append="%">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button" data-counter="add"
@@ -295,14 +295,21 @@
                         updateValue(this);
                     })
                     input.addEventListener('focusin', function () {
+                        let oldVal
+                        // console.log(`this.value:${this.value}`)
+                        oldVal = this.value
                         this.value = ''
+                        // console.log(`old value:${oldVal}`)
+                        input.addEventListener('focusout', function (oldVal) {
+                            console.log(this.value)
+                            if (this.value == '' || this.value == undefined) {
+                                this.value = oldVal
+                            }
+                            updateValue(this)
+                            chart.update();
+                        })
                     })
 
-                    input.addEventListener('focusout', function () {
-                        if (this.value == '') { this.value = this.defaultValue }
-                        updateValue(this)
-                        chart.update();
-                    })
                 })
 
             }
