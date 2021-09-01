@@ -45,6 +45,7 @@
                 <div class="result">סכום חיסכון עתידי משוער ללא דמי ניהול: <span id="res1"></span></div>
                 <div class="result">סך דמי ניהול מההפקדה: <span id="res2"></span></div>
                 <div class="result">סך דמי ניהול מצבירה: <span id="res3"></span></div>
+                <div class="result">אבדן רווח עקב גביית דמי ניהול: <span id="res5"></span></div>
                 <div class="result">סכום חיסכון עתידי משוער בניכוי דמי ניהול: <span id="res4"></span></div>
             </div>
         </div>
@@ -222,7 +223,8 @@
                 balance_without_fees_res = document.querySelector('#res1'),
                 contribution_fee_res = document.querySelector('#res2'),
                 balance_fee_res = document.querySelector('#res3'),
-                future_balance_res = document.querySelector('#res4');
+                future_balance_res = document.querySelector('#res4'),
+                lost_interest_res = document.querySelector('#res5');
 
             function updateValue(element, action) {
                 let min = parseFloat(element.getAttribute('min')),
@@ -263,7 +265,7 @@
                     t = parseInt(investment_timespan.value), // Investment Time Span
                     currentYear = (new Date()).getFullYear()
                     ;
-                console.log(bf, cf)
+
 
 
                 let labels = [];
@@ -284,29 +286,47 @@
                 };
 
                 for (let i = 1; i <= t; i++) {
+                    //calculation without fees
                     let principal = P + (c * n2 * i),
                         interest = 0,
                         balance = principal,
+                        //calculation with fees
                         principal_with_fees = P + (c2 * n2 * i),
                         interest_with_fees = 0,
-                        balance_with_fees = principal_with_fees;
+                        balance_with_fees = principal_with_fees,
+                        management_fees = [],
+                        contribution_fees,
+                        lost_interest;
 
 
                     if (r) {
+                        // calculating everything without fees
                         let x = Math.pow(1 + r / n, n * i),
                             compound_interest = P * x,
                             contribution_interest = c * (x - 1) / (r / n2);
                         interest = (compound_interest + contribution_interest - principal).toFixed(0)
                         balance = (compound_interest + contribution_interest).toFixed(0);
+                        //calculation with fees
                         let x2 = Math.pow(1 + r2 / n, n * i),
                             compound_interest_with_fees = P * x2,
                             contribution_interest_with_fees = c2 * (x2 - 1) / (r2 / n2);
+
+
                         interest_with_fees = (compound_interest_with_fees + contribution_interest_with_fees - principal_with_fees).toFixed(0)
                         balance_with_fees = (compound_interest_with_fees + contribution_interest_with_fees).toFixed(0);
-                    }
 
-                    //    contribution_fee_res.innerHTML = '₪ ' + contribution_fees
-                    // balance_fee_res.innerHTML = '₪ ' + management_fees
+
+                    }
+                    contribution_fees = (c * (cf / 100)) * 12 * t
+                    management_fees = management_fees + balance * (bf / 100)
+                    lost_interest = balance - balance_with_fees - management_fees - contribution_fees;
+
+
+                    // console.log(`${contribution_fees}+${management_fees[t]}+${balance_with_fees}=${balance}`)
+
+                    balance_fee_res.innerHTML = '₪ ' + Math.round(management_fees)
+                    contribution_fee_res.innerHTML = '₪ ' + Math.round(contribution_fees)
+                    lost_interest_res.innerHTML = lost_interest
                     principal_dataset.data.push(principal_with_fees);
                     interest_dataset.data.push(interest_with_fees);
                     future_balance.innerHTML = '₪ ' + balance_with_fees;
