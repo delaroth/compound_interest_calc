@@ -42,6 +42,8 @@
             <div class="h3" id="future_balance">?</div>
             <canvas id="myChart"></canvas>
             <div id="calcResults" class="flex">
+                <div class="resut">סכום ההפקדה הכולל: <span id="res6"></span> </div>
+                <div class="result">רווח: <span id="res7"></span></div>
                 <div class="result">סכום חיסכון עתידי משוער ללא דמי ניהול: <span id="res1"></span></div>
                 <div class="result">סך דמי ניהול מההפקדה: <span id="res2"></span></div>
                 <div class="result">סך דמי ניהול מצבירה: <span id="res3"></span></div>
@@ -61,7 +63,7 @@
                             </div>
                             <input class="form-control text-center" id="initial_deposit" type="text"
                                 name="initial_deposit" min="100" max="10000000" step="100" value="10000₪"
-                                data-value="5000" data-append="₪">
+                                data-value="10000" data-append="₪">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button" data-counter="add"
                                     data-field="initial_deposit">+</button>
@@ -204,10 +206,12 @@
                     </div>
                 </div>
             </div>
+            <button id="calc">חישוב</button> <button id='reset'>איפוס</button>
+
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.3/css/bootstrap.css"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.3/css/bootstrap.css"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
     <script>
         (function () {
@@ -224,13 +228,16 @@
                 contribution_fee_res = document.querySelector('#res2'),
                 balance_fee_res = document.querySelector('#res3'),
                 future_balance_res = document.querySelector('#res4'),
-                lost_interest_res = document.querySelector('#res5');
+                lost_interest_res = document.querySelector('#res5'),
+                total_deposits_res = document.querySelector('#res6'),
+                total_interest_res = document.querySelector('#res7')
+                ;
 
             function updateValue(element, action) {
                 let min = parseFloat(element.getAttribute('min')),
                     max = parseFloat(element.getAttribute('max')),
                     step = parseFloat(element.getAttribute('step')) || 1,
-                    oldValue = element.dataset.value || element.defaultValue || 0,
+                    oldValue = element.dataset.value || element.defaultValue,
                     newValue = parseFloat(element.value.replace(/\₪/, ''));
 
                 if (isNaN(parseFloat(newValue))) {
@@ -265,6 +272,9 @@
                     t = parseInt(investment_timespan.value), // Investment Time Span
                     currentYear = (new Date()).getFullYear()
                     ;
+
+
+
 
 
 
@@ -332,6 +342,8 @@
                     future_balance.innerHTML = '₪ ' + balance_with_fees;
                     balance_without_fees_res.innerHTML = '₪ ' + balance;
                     future_balance_res.innerHTML = '₪ ' + balance_with_fees
+                    total_deposits_res.innerHTML = '₪ ' + principal_with_fees
+                    total_interest_res.innerHTML = '₪ ' + interest_with_fees
                 }
 
                 return {
@@ -372,8 +384,30 @@
                 })
 
             }
-            applyEvents([initial_deposit, contribution_amount, estimated_return, investment_timespan, balance_fee_percentage, deposit_fee_percentage])
+            let arrOfInputs = [initial_deposit, contribution_amount, estimated_return, investment_timespan, balance_fee_percentage, deposit_fee_percentage];
+            applyEvents(arrOfInputs)
 
+
+
+
+            let calc = document.querySelector('#calc'),
+                reset = document.querySelector('#reset');
+
+            calc.addEventListener('click', () => {
+                updateChart()
+                console.log('calculateded')
+            })
+            reset.addEventListener('click', () => {
+                arrOfInputs.forEach(input => {
+                    input.value = ''
+
+                })
+
+
+
+
+                console.log('reset')
+            })
 
 
 
