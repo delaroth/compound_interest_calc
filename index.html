@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
@@ -21,15 +21,32 @@
             display: flex;
             justify-content: flex-start;
         }
+
+
+
+        #calcResults {
+            height: 25vh;
+            width: 100%;
+            border: 1px solid black;
+            background-color: bisque;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="col-md-6 text-center">
-            <div>סכום חיסכון עתידי</div>
+        <div class="col-md-6 text-center" id="graphAndResults">
+            <div> :סכום חיסכון עתידי</div>
             <div class="h3" id="future_balance">?</div>
             <canvas id="myChart"></canvas>
+            <div id="calcResults" class="flex">
+                <div class="result">סכום חיסכון עתידי משוער ללא דמי ניהול: <span id="res1"></span></div>
+                <div class="result">סך דמי ניהול מההפקדה: <span id="res2"></span></div>
+                <div class="result">סך דמי ניהול מצבירה: <span id="res3"></span></div>
+                <div class="result">סכום חיסכון עתידי משוער בניכוי דמי ניהול: <span id="res4"></span></div>
+            </div>
         </div>
         <div class="row" dir="rtl">
             <div class="col-md-6">
@@ -201,7 +218,11 @@
                 estimated_return = document.querySelector('#estimated_return'),
                 deposit_fee_percentage = document.querySelector('#deposit_fee_percentage'),
                 balance_fee_percentage = document.querySelector('#balance_fee_percentage'),
-                future_balance = document.querySelector('#future_balance');
+                future_balance = document.querySelector('#future_balance'),
+                balance_without_fees_res = document.querySelector('#res1'),
+                contribution_fee_res = document.querySelector('#res2'),
+                balance_fee_res = document.querySelector('#res3'),
+                future_balance_res = document.querySelector('#res4');
 
             function updateValue(element, action) {
                 let min = parseFloat(element.getAttribute('min')),
@@ -231,17 +252,22 @@
             function getChartData() {
 
                 let P = parseFloat(initial_deposit.dataset.value), // Principal
-                    r = parseFloat((estimated_return.dataset.value - balance_fee_percentage.dataset.value) / 100), // Annual Interest Rate after subtracting yearly fees
-                    c = parseFloat(contribution_amount.dataset.value * ((100 - deposit_fee_percentage.dataset.value) / 100)), // Contribution Amount
+                    r = parseFloat((estimated_return.dataset.value) / 100), //Anual interest without fees
+                    bf = parseFloat(balance_fee_percentage.dataset.value), // balance fee percentage
+                    r2 = parseFloat((estimated_return.dataset.value - bf) / 100), // Annual Interest Rate after subtracting yearly fees
+                    c = parseFloat(contribution_amount.dataset.value), // Contribution Amount
+                    cf = parseFloat(deposit_fee_percentage.dataset.value),
+                    c2 = parseFloat(contribution_amount.dataset.value * ((100 - cf) / 100)), //contribution after fees
                     n = parseInt(document.querySelector('[name="compound_period"]:checked').value), // Compound Period
                     n2 = parseInt(document.querySelector('[name="contribution_period"]:checked').value), // Contribution Period
                     t = parseInt(investment_timespan.value), // Investment Time Span
                     currentYear = (new Date()).getFullYear()
                     ;
+                console.log(bf, cf)
 
 
                 let labels = [];
-                for (var year = currentYear; year < currentYear + t; year++) {
+                for (let year = currentYear; year < currentYear + t; year++) {
                     labels.push(year);
                 }
 
@@ -257,22 +283,35 @@
                     data: []
                 };
 
-                for (var i = 1; i <= t; i++) {
-                    var principal = P + (c * n2 * i),
+                for (let i = 1; i <= t; i++) {
+                    let principal = P + (c * n2 * i),
                         interest = 0,
-                        balance = principal;
+                        balance = principal,
+                        principal_with_fees = P + (c2 * n2 * i),
+                        interest_with_fees = 0,
+                        balance_with_fees = principal_with_fees;
+
 
                     if (r) {
-                        var x = Math.pow(1 + r / n, n * i),
+                        let x = Math.pow(1 + r / n, n * i),
                             compound_interest = P * x,
                             contribution_interest = c * (x - 1) / (r / n2);
                         interest = (compound_interest + contribution_interest - principal).toFixed(0)
                         balance = (compound_interest + contribution_interest).toFixed(0);
+                        let x2 = Math.pow(1 + r2 / n, n * i),
+                            compound_interest_with_fees = P * x2,
+                            contribution_interest_with_fees = c2 * (x2 - 1) / (r2 / n2);
+                        interest_with_fees = (compound_interest_with_fees + contribution_interest_with_fees - principal_with_fees).toFixed(0)
+                        balance_with_fees = (compound_interest_with_fees + contribution_interest_with_fees).toFixed(0);
                     }
 
-                    future_balance.innerHTML = '₪ ' + balance;
-                    principal_dataset.data.push(principal);
-                    interest_dataset.data.push(interest);
+                    //    contribution_fee_res.innerHTML = '₪ ' + contribution_fees
+                    // balance_fee_res.innerHTML = '₪ ' + management_fees
+                    principal_dataset.data.push(principal_with_fees);
+                    interest_dataset.data.push(interest_with_fees);
+                    future_balance.innerHTML = '₪ ' + balance_with_fees;
+                    balance_without_fees_res.innerHTML = '₪ ' + balance;
+                    future_balance_res.innerHTML = '₪ ' + balance_with_fees
                 }
 
                 return {
@@ -282,7 +321,7 @@
             }
 
             function updateChart() {
-                var data = getChartData();
+                let data = getChartData();
 
                 chart.data.labels = data.labels;
                 chart.data.datasets[0].data = data.datasets[0].data;
@@ -319,17 +358,17 @@
 
 
 
-            var radios = document.querySelectorAll('[name="contribution_period"], [name="compound_period"]');
-            for (var j = 0; j < radios.length; j++) {
+            let radios = document.querySelectorAll('[name="contribution_period"], [name="compound_period"]');
+            for (let j = 0; j < radios.length; j++) {
                 radios[j].addEventListener('change', updateChart);
             }
 
-            var buttons = document.querySelectorAll('[data-counter]');
-            for (var i = 0; i < buttons.length; i++) {
-                var button = buttons[i];
+            let buttons = document.querySelectorAll('[data-counter]');
+            for (let i = 0; i < buttons.length; i++) {
+                let button = buttons[i];
 
                 button.addEventListener('click', function () {
-                    var field = document.querySelector('[name="' + this.dataset.field + '"]'),
+                    let field = document.querySelector('[name="' + this.dataset.field + '"]'),
                         action = this.dataset.counter;
 
                     if (field) {
@@ -338,7 +377,7 @@
                 });
             }
 
-            var ctx = document.getElementById('myChart').getContext('2d'),
+            let ctx = document.getElementById('myChart').getContext('2d'),
                 chart = new Chart(ctx, {
                     type: 'line',
                     data: getChartData(),
