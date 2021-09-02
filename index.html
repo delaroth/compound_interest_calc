@@ -85,6 +85,10 @@
         .displayToggle {
             display: none;
         }
+
+        #dropdown:hover {
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -162,7 +166,7 @@
                                     data-field="contribution_amount">−</button>
                             </div>
                             <input class="form-control text-center" id="contribution_amount" type="text"
-                                name="contribution_amount" min="0" max="50000" step="50" value="0" data-value="1000"
+                                name="contribution_amount" min="0" max="50000" step="50" value="0" data-value="0"
                                 data-append="₪">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button" data-counter="add"
@@ -423,14 +427,14 @@
 
                     balance_fee_res.innerHTML = '₪ ' + Math.round(management_fees)
                     contribution_fee_res.innerHTML = '₪ ' + Math.round(contribution_fees)
-                    lost_interest_res.innerHTML = '₪ ' + lost_interest
+                    lost_interest_res.innerHTML = '₪ ' + Math.round(lost_interest)
                     principal_dataset.data.push(principal_with_fees);
                     interest_dataset.data.push(interest_with_fees);
                     future_balance.innerHTML = '₪ ' + balance_with_fees;
                     balance_without_fees_res.innerHTML = '₪ ' + balance;
                     future_balance_res.innerHTML = '₪ ' + balance_with_fees
-                    total_deposits_res.innerHTML = '₪ ' + principal_with_fees
-                    total_interest_res.innerHTML = '₪ ' + interest_with_fees
+                    total_deposits_res.innerHTML = '₪ ' + Math.round(principal_with_fees)
+                    total_interest_res.innerHTML = '₪ ' + Math.round(interest_with_fees)
                 }
 
                 return {
