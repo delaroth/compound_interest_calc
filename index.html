@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- <script src="https://kit.fontawesome.com/03e7242fb8.js" crossorigin="anonymous"></script> -->
     <style>
         body {
             margin-top: 60px
@@ -14,6 +16,10 @@
 
         .flex {
             display: flex;
+        }
+
+        .column {
+            flex-direction: column;
         }
 
 
@@ -25,12 +31,59 @@
 
 
         #calcResults {
-            height: 25vh;
+            /* height: 25vh; */
             width: 100%;
             border: 1px solid black;
             background-color: bisque;
             flex-direction: column;
-            justify-content: space-evenly;
+            justify-content: flex-start;
+        }
+
+        #box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+
+            width: 150%;
+        }
+
+        #calc {
+            width: 72%;
+        }
+
+
+        .result {
+            background-color: white;
+            width: 75%;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1vh;
+            ;
+
+        }
+
+        .result .headline {
+
+            font-weight: bolder;
+            position: relative;
+            right: 5px;
+            width: 50%;
+
+
+        }
+
+        .result .ans {
+            font-weight: normal;
+            margin: 0;
+            width: 50%;
+            text-align: center;
+        }
+
+        .displayToggle {
+            display: none;
         }
     </style>
 </head>
@@ -42,17 +95,45 @@
             <div class="h3" id="future_balance">?</div>
             <canvas id="myChart"></canvas>
             <div id="calcResults" class="flex">
-                <div class="resut">סכום ההפקדה הכולל: <span id="res6"></span> </div>
-                <div class="result">רווח: <span id="res7"></span></div>
-                <div class="result">סכום חיסכון עתידי משוער ללא דמי ניהול: <span id="res1"></span></div>
-                <div class="result">סך דמי ניהול מההפקדה: <span id="res2"></span></div>
-                <div class="result">סך דמי ניהול מצבירה: <span id="res3"></span></div>
-                <div class="result">אבדן רווח עקב גביית דמי ניהול: <span id="res5"></span></div>
-                <div class="result">סכום חיסכון עתידי משוער בניכוי דמי ניהול: <span id="res4"></span></div>
+                <div class="result">
+                    <div class="headline">סכום ההפקדה הכולל: </div>
+                    <div id="res6" class="ans">
+                    </div>
+                </div>
+                <div class="result">
+                    <div class="headline">רווח כולל:</div>
+                    <div id="res7" class="ans"></div>
+                </div>
+
+                <div class="result" id="futureGains">
+                    <div class="headline">סכום חיסכון עתידי:</div>
+                    <div id="res1" class="ans">
+                    </div>
+                </div>
+                <div class="result displayToggle">
+                    <div class="headline">סך דמי ניהול מההפקדה:</div>
+                    <div id="res2" class="ans">
+                    </div>
+                </div>
+                <div class="result displayToggle">
+                    <div class="headline">סך דמי ניהול מצבירה:</div>
+                    <div id="res3" class="ans">
+                    </div>
+                </div>
+                <div class="result displayToggle">
+                    <div class="headline">אבדן רווח עקב גביית דמי ניהול:</div>
+                    <div id="res5" class="ans">
+                    </div>
+                </div>
+                <div class="result displayToggle">
+                    <div class="headline">סכום חיסכון עתידי משוער בניכוי דמי ניהול:</div>
+                    <div id="res4" class="ans">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row" dir="rtl">
-            <div class="col-md-6">
+            <div class="col-md-6" id="box">
                 <div class="form-group">
                     <label for="initial_deposit">סכום הפקדה ראשוני</label>
                     <div class="row">
@@ -81,7 +162,7 @@
                                     data-field="contribution_amount">−</button>
                             </div>
                             <input class="form-control text-center" id="contribution_amount" type="text"
-                                name="contribution_amount" min="0" max="50000" step="50" value="1000₪" data-value="1000"
+                                name="contribution_amount" min="0" max="50000" step="50" value="0" data-value="1000"
                                 data-append="₪">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button" data-counter="add"
@@ -90,13 +171,13 @@
                         </div>
                     </div>
 
-                    <div class="form-check form-check-inline" style="visibility: collapse;">
+                    <div class="form-check form-check-inline" style="display: none;">
                         <input class="form-check-input" id="contribution_period_monthly" type="radio"
                             name="contribution_period" value="12" checked>
                         <label class="form-check-label" for="contribution_period_monthly">monthly</label>
                     </div>
 
-                    <div class="form-check form-check-inline" style="visibility:collapse;">
+                    <div class="form-check form-check-inline" style="display:none;">
                         <input class="form-check-input" id="contribution_period_annually" type="radio"
                             name="contribution_period" value="1">
                         <label class="form-check-label" for="contribution_period_annually">annually</label>
@@ -107,8 +188,6 @@
                     <label for="investment_timespan">מספר שנות ההפקדה</label>
                     <div class="row" id='flex-right'>
                         <div class="input-group col-md-6 col-sm-8 flex">
-                            <!-- <input class="form-control" id="investment_timespan" type="text" name="investment_timespan"
-                                min="1" max="50" step="1" value="5"> -->
                             <div class="input-group-prepend">
                                 <button class="btn btn-primary" type="button" data-counter="sub"
                                     data-field="investment_timespan">−</button>
@@ -122,7 +201,7 @@
                             </div>
                         </div>
                     </div>
-                    <span id="investment_timespan_text" style="visibility:collapse;">5 שנים</span>
+                    <span id="investment_timespan_text" style="display: none;">5 שנים </span>
 
                 </div>
 
@@ -145,45 +224,51 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="deposit_fee_percentage">דמי ניהול מהפקדה</label>
-                    <div class="row">
-                        <div class="input-group col-md-6 col-sm-8 flex">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-primary" type="button" data-counter="sub"
-                                    data-field="deposit_fee_percentage">−</button>
+
+                <div class="displayToggle flex column">
+                    <div class="form-group">
+                        <label for="deposit_fee_percentage">דמי ניהול מהפקדה</label>
+                        <div class="row">
+                            <div class="input-group col-md-6 col-sm-8 flex">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-primary" type="button" data-counter="sub"
+                                        data-field="deposit_fee_percentage">−</button>
+                                </div>
+                                <input class="form-control text-center" id="deposit_fee_percentage" type="text"
+                                    name="deposit_fee_percentage" min="0" max="50" step="0.1" value="0%"
+                                    data-value="0.00" data-append="%">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button" data-counter="add"
+                                        data-field="deposit_fee_percentage">+</button>
+                                </div>
                             </div>
-                            <input class="form-control text-center" id="deposit_fee_percentage" type="text"
-                                name="deposit_fee_percentage" min="0" max="50" step="0.25" value="0%" data-value="0.00"
-                                data-append="%">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button" data-counter="add"
-                                    data-field="deposit_fee_percentage">+</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="balance_fee_percentage">דמי ניהול מהצבירה</label>
+                        <div class="row">
+                            <div class="input-group col-md-6 col-sm-8 flex">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-primary" type="button" data-counter="sub"
+                                        data-field="balance_fee_percentage">−</button>
+                                </div>
+                                <input class="form-control text-center" id="balance_fee_percentage" type="text"
+                                    name="balance_fee_percentage" min="0" max="50" step="0.05" value="0%"
+                                    data-value="0.00" data-append="%">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button" data-counter="add"
+                                        data-field="balance_fee_percentage">+</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="balance_fee_percentage">דמי ניהול מהצבירה</label>
-                    <div class="row">
-                        <div class="input-group col-md-6 col-sm-8 flex">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-primary" type="button" data-counter="sub"
-                                    data-field="balance_fee_percentage">−</button>
-                            </div>
-                            <input class="form-control text-center" id="balance_fee_percentage" type="text"
-                                name="balance_fee_percentage" min="0" max="50" step="0.25" value="0%" data-value="0.00"
-                                data-append="%">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button" data-counter="add"
-                                    data-field="balance_fee_percentage">+</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <button id="calc">חישוב</button>
+                <div id="dropdown">מורחב <span>+</span></div>
 
-                <div class="form-group row" style="visibility: hidden;">
+                <div class=" form-group row" style="display: none;">
                     <div class="col-sm-12">
                         <div>Compound Frequency</div>
                         <div class="form-check form-check-inline">
@@ -203,10 +288,10 @@
                                 name="compound_period" value="1">
                             <label class="form-check-label" for="compound_period_annually">שנתי</label>
                         </div>
+
                     </div>
                 </div>
             </div>
-            <button id="calc">חישוב</button> <button id='reset'>איפוס</button>
 
         </div>
     </div>
@@ -230,8 +315,9 @@
                 future_balance_res = document.querySelector('#res4'),
                 lost_interest_res = document.querySelector('#res5'),
                 total_deposits_res = document.querySelector('#res6'),
-                total_interest_res = document.querySelector('#res7')
-                ;
+                total_interest_res = document.querySelector('#res7'),
+                dropdown = document.querySelector('#dropdown');
+
 
             function updateValue(element, action) {
                 let min = parseFloat(element.getAttribute('min')),
@@ -239,12 +325,13 @@
                     step = parseFloat(element.getAttribute('step')) || 1,
                     oldValue = element.dataset.value || element.defaultValue,
                     newValue = parseFloat(element.value.replace(/\₪/, ''));
+                console.log(step)
 
                 if (isNaN(parseFloat(newValue))) {
                     newValue = oldValue;
                 } else {
                     if (action == 'add') {
-                        newValue += step;
+                        newValue = ((newValue * 10) + (step * 10)) / 10;
                     } else if (action == 'sub') {
                         newValue -= step;
                     }
@@ -336,7 +423,7 @@
 
                     balance_fee_res.innerHTML = '₪ ' + Math.round(management_fees)
                     contribution_fee_res.innerHTML = '₪ ' + Math.round(contribution_fees)
-                    lost_interest_res.innerHTML = lost_interest
+                    lost_interest_res.innerHTML = '₪ ' + lost_interest
                     principal_dataset.data.push(principal_with_fees);
                     interest_dataset.data.push(interest_with_fees);
                     future_balance.innerHTML = '₪ ' + balance_with_fees;
@@ -390,24 +477,38 @@
 
 
 
-            let calc = document.querySelector('#calc'),
-                reset = document.querySelector('#reset');
+            let calc = document.querySelector('#calc');
 
             calc.addEventListener('click', () => {
                 updateChart()
-                console.log('calculateded')
+
             })
-            reset.addEventListener('click', () => {
-                arrOfInputs.forEach(input => {
-                    input.value = ''
 
-                })
+            dropdown.addEventListener('click', () => {
+                const hiddenItems = document.getElementsByClassName('displayToggle');
+                const symbol = document.querySelector('#dropdown span');
+                console.log(hiddenItems)
+                if (symbol.innerHTML == "+") {
+
+                    document.querySelector('#futureGains').style.display = 'none';
+                    Array.prototype.forEach.call(hiddenItems, item => item.style.display = 'inherit');
+                    symbol.innerHTML = "-";
+                }
+                else {
+                    Array.prototype.forEach.call(hiddenItems, item => item.style.display = 'none');
+                    document.querySelector('#futureGains').style.display = 'inherit';
 
 
+                    symbol.innerHTML = "+";
+                }
 
-
-                console.log('reset')
             })
+
+
+
+
+
+
 
 
 
