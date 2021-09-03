@@ -64,11 +64,15 @@
 
         .result {
 
-            width: 75%;
+            width: 100%;
+            height: 200%;
             margin: auto;
             display: flex;
             justify-content: space-between;
-            margin-bottom: 1vh;
+            padding: 0.7vh;
+            border: 1px solid grey;
+            border-radius: 5px;
+
 
 
 
@@ -109,6 +113,10 @@
         .btn-primary {
             background-color: #1b84a6;
         }
+
+        .result.losses {
+            background-color: rgb(250, 128, 97);
+        }
     </style>
 </head>
 
@@ -134,18 +142,18 @@
                     <div id="res1" class="ans">
                     </div>
                 </div>
-                <div class="result displayToggle">
-                    <div class="headline">סך דמי ניהול מההפקדה:</div>
+                <div class="result displayToggle losses">
+                    <div class="headline ">סך דמי ניהול מההפקדה:</div>
                     <div id="res2" class="ans">
                     </div>
                 </div>
-                <div class="result displayToggle">
-                    <div class="headline">סך דמי ניהול מצבירה:</div>
+                <div class="result displayToggle losses">
+                    <div class="headline ">סך דמי ניהול מצבירה:</div>
                     <div id="res3" class="ans">
                     </div>
                 </div>
-                <div class="result displayToggle">
-                    <div class="headline">אבדן רווח עקב גביית דמי ניהול:</div>
+                <div class="result displayToggle losses">
+                    <div class="headline ">אבדן רווח עקב גביית דמי ניהול:</div>
                     <div id="res5" class="ans">
                     </div>
                 </div>
