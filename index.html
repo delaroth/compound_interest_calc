@@ -93,6 +93,8 @@
             margin: 0;
             width: 50%;
             text-align: center;
+            font-weight: 700;
+            font-size: 1.3em;
         }
 
         .displayToggle {
@@ -115,7 +117,11 @@
         }
 
         .result.losses {
-            background-color: rgb(250, 128, 97);
+            color: red;
+        }
+
+        .result.savings {
+            color: green;
         }
     </style>
 </head>
@@ -137,7 +143,7 @@
                     <div id="res7" class="ans"></div>
                 </div>
 
-                <div class="result" id="futureGains">
+                <div class="result savings" id="futureGains">
                     <div class="headline">סכום חיסכון עתידי:</div>
                     <div id="res1" class="ans">
                     </div>
@@ -157,7 +163,7 @@
                     <div id="res5" class="ans">
                     </div>
                 </div>
-                <div class="result displayToggle">
+                <div class="result displayToggle savings">
                     <div class="headline">סכום חיסכון עתידי משוער בניכוי דמי ניהול:</div>
                     <div id="res4" class="ans">
                     </div>
