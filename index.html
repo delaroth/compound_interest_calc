@@ -180,11 +180,11 @@
                                 <button class="btn btn-primary " type="button" data-counter="sub"
                                     data-field="initial_deposit">−</button>
                             </div>
-                            <input class="form-control text-center" id="initial_deposit" type="text"
-                                name="initial_deposit" min="0" max="10000000" step="100" value="10000₪"
-                                data-value="10000" data-append="₪">
+                            <input class="form-control text-center" id="initial_deposit" type="text" dir="ltr"
+                                name="initial_deposit" min="0" max="10000000" step="100" value="₪ 10000"
+                                data-value="10000" data-prepend="₪ ">
                             <div class="input-group-append">
-                                <button class="btn btn-primary " type="button" data-counter="add"
+                                <button class="btn btn-primary" type="button" data-counter="add"
                                     data-field="initial_deposit">+</button>
                             </div>
                         </div>
@@ -199,9 +199,9 @@
                                 <button class="btn btn-primary " type="button" data-counter="sub"
                                     data-field="contribution_amount">−</button>
                             </div>
-                            <input class="form-control text-center" id="contribution_amount" type="text"
-                                name="contribution_amount" min="0" max="50000" step="50" value="0₪" data-value="0"
-                                data-append="₪">
+                            <input class="form-control text-center" id="contribution_amount" type="text" dir="ltr"
+                                name="contribution_amount" min="0" max="50000" step="50" value="₪ 0 " data-value="0"
+                                data-prepend="₪ ">
                             <div class="input-group-append">
                                 <button class="btn btn-primary " type="button" data-counter="add"
                                     data-field="contribution_amount">+</button>
@@ -460,16 +460,16 @@
 
                     // console.log(`${contribution_fees}+${management_fees[t]}+${balance_with_fees}=${balance}`)
 
-                    balance_fee_res.innerHTML = '₪ ' + Math.round(management_fees).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    contribution_fee_res.innerHTML = '₪ ' + Math.round(contribution_fees).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    lost_interest_res.innerHTML = '₪ ' + Math.round(lost_interest).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    balance_fee_res.innerHTML = Math.round(management_fees).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ₪'
+                    contribution_fee_res.innerHTML = Math.round(contribution_fees).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ₪'
+                    lost_interest_res.innerHTML = Math.round(lost_interest).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ₪'
                     principal_dataset.data.push(principal_with_fees);
                     interest_dataset.data.push(interest_with_fees);
-                    future_balance.innerHTML = '₪ ' + balance_with_fees.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    balance_without_fees_res.innerHTML = '₪ ' + Math.round(balance).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    future_balance_res.innerHTML = '₪ ' + Math.round(balance_with_fees).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    total_deposits_res.innerHTML = '₪ ' + Math.round(principal_with_fees).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    total_interest_res.innerHTML = '₪ ' + Math.round(interest_with_fees).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    future_balance.innerHTML = balance_with_fees.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ₪';
+                    balance_without_fees_res.innerHTML = Math.round(balance).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ₪';
+                    future_balance_res.innerHTML = Math.round(balance_with_fees).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ₪'
+                    total_deposits_res.innerHTML = Math.round(principal_with_fees).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ₪';
+                    total_interest_res.innerHTML = Math.round(interest_with_fees).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ₪'
                 }
                 ;
 
