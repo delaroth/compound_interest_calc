@@ -11,7 +11,7 @@
     <!-- <script src="https://kit.fontawesome.com/03e7242fb8.js" crossorigin="anonymous"></script> -->
     <style>
         body {
-            margin-top: 60px
+            margin-top: 5px;
         }
 
         .flex {
@@ -22,36 +22,38 @@
             flex-direction: column;
         }
 
-
-        #flex-right {
-            display: flex;
-            justify-content: flex-start;
-        }
-
-
-
         #calcResults {
 
-            width: 100%;
+            width: 60%;
+            min-width: 200px;
+            height: max-content;
             background-color: #DCF7FF;
             flex-direction: column;
             justify-content: flex-start;
             border-radius: 5px;
+
+            margin: auto;
+
         }
 
-        #box {
+        #input_form {
             display: flex;
             flex-direction: column;
+            width: auto;
+            width: 100%;
+            align-items: center;
+
+
         }
 
-        .form-group {
 
-            width: 150%;
-        }
+
 
         #calc {
-            margin-right: 1vw;
-            width: 66%;
+            /* margin-right: 1vw; */
+            width: 40%;
+            /* margin: auto; */
+            margin-top: 15px;
 
             background-color: #FFDE59;
         }
@@ -102,8 +104,6 @@
         }
 
         #dropdown {
-
-
             width: max-content;
         }
 
@@ -121,6 +121,7 @@
         }
 
         .savings {
+
             color: #1b84a6;
             font-size: larger;
             font-weight: bold;
@@ -129,55 +130,62 @@
         .result.savings {
             font-weight: 500;
         }
+
+        #inputOutput {
+            width: min-content;
+            width: 50%;
+            min-width: 700px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 90%;
+
+        }
+
+        .form-control.text-center,
+        .displayToggle.flex.column {
+            width: 100%;
+        }
+
+        .form-group {
+            width: 60%;
+            margin: auto;
+        }
+
+
+        .input-group.col-md-6.col-sm-8.flex {
+            width: 100%;
+        }
+
+
+
+
+
+        h1 {
+            text-align: center;
+            margin: 40px;
+        }
+
+        #graph {
+            margin-top: 20px;
+        }
     </style>
 </head>
 
-<body>
+<body dir="rtl">
+    <h1>מחשבון ריבית דריבית</h1>
     <div class="container">
-        <div class="col-md-6 text-center" id="graphAndResults">
-            <div class="savings">סכום חיסכון עתידי </div>
-            <div class="h3" id="future_balance">?</div>
-            <canvas id="myChart"></canvas>
-            <div id="calcResults" class="flex">
-                <div class="result">
-                    <div class="headline">סכום ההפקדה הכולל: </div>
-                    <div id="res6" class="ans">
-                    </div>
-                </div>
-                <div class="result">
-                    <div class="headline">רווח כולל:</div>
-                    <div id="res7" class="ans"></div>
-                </div>
+        <div class="row" dir="rtl" id="inputOutput">
 
-                <div class="result savings" id="futureGains">
-                    <div class="headline">סכום חיסכון עתידי:</div>
-                    <div id="res1" class="ans">
-                    </div>
-                </div>
-                <div class="result displayToggle losses">
-                    <div class="headline ">סך דמי ניהול מההפקדה:</div>
-                    <div id="res2" class="ans">
-                    </div>
-                </div>
-                <div class="result displayToggle losses">
-                    <div class="headline ">סך דמי ניהול מצבירה:</div>
-                    <div id="res3" class="ans">
-                    </div>
-                </div>
-                <div class="result displayToggle losses">
-                    <div class="headline ">אבדן רווח עקב גביית דמי ניהול:</div>
-                    <div id="res5" class="ans">
-                    </div>
-                </div>
-                <div class="result displayToggle savings">
-                    <div class="headline">סכום חיסכון עתידי משוער בניכוי דמי ניהול:</div>
-                    <div id="res4" class="ans">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row" dir="rtl">
-            <div class="col-md-6" id="box">
+            <div class="col-md-6" id="input_form">
                 <div class="form-group">
                     <label for="initial_deposit">סכום הפקדה ראשוני</label>
                     <div class="row">
@@ -186,7 +194,7 @@
                                 <button class="btn btn-primary " type="button" data-counter="sub"
                                     data-field="initial_deposit">−</button>
                             </div>
-                            <input class="form-control text-center" id="initial_deposit" type="text" dir="ltr"
+                            <input class="form-control text-center " id="initial_deposit" type="text" dir="ltr"
                                 name="initial_deposit" min="0" max="10000000" step="100" value="₪ 10000"
                                 data-value="10000" data-prepend="₪ ">
                             <div class="input-group-append">
@@ -205,7 +213,7 @@
                                 <button class="btn btn-primary " type="button" data-counter="sub"
                                     data-field="contribution_amount">−</button>
                             </div>
-                            <input class="form-control text-center" id="contribution_amount" type="text" dir="ltr"
+                            <input class="form-control text-center " id="contribution_amount" type="text" dir="ltr"
                                 name="contribution_amount" min="0" max="50000" step="50" value="₪ 0 " data-value="0"
                                 data-prepend="₪ ">
                             <div class="input-group-append">
@@ -228,15 +236,15 @@
                     </div>
                 </div>
 
-                <div class="form-group " id='investment_timespan_box'>
+                <div class="form-group" id='investment_timespan_box'>
                     <label for="investment_timespan">מספר שנות ההפקדה</label>
-                    <div class="row" id='flex-right'>
+                    <div class="row">
                         <div class="input-group col-md-6 col-sm-8 flex">
                             <div class="input-group-prepend">
                                 <button class="btn btn-primary " type="button" data-counter="sub"
                                     data-field="investment_timespan">−</button>
                             </div>
-                            <input class="form-control text-center" id="investment_timespan" type="text"
+                            <input class="form-control text-center " id="investment_timespan" type="text"
                                 name="investment_timespan" min="2" max="250" step="1" value="10 שנים" data-value="10"
                                 data-append=" שנים ">
                             <div class="input-group-append">
@@ -257,7 +265,7 @@
                                 <button class="btn btn-primary " type="button" data-counter="sub"
                                     data-field="estimated_return">−</button>
                             </div>
-                            <input class="form-control text-center" id="estimated_return" type="text"
+                            <input class="form-control text-center " id="estimated_return" type="text"
                                 name="estimated_return" min="0" max="50" step="0.25" value="5%" data-value="5.00"
                                 data-append="%">
                             <div class="input-group-append">
@@ -278,7 +286,7 @@
                                     <button class="btn btn-primary " type="button" data-counter="sub"
                                         data-field="deposit_fee_percentage">−</button>
                                 </div>
-                                <input class="form-control text-center" id="deposit_fee_percentage" type="text"
+                                <input class="form-control text-center " id="deposit_fee_percentage" type="text"
                                     name="deposit_fee_percentage" min="0" max="50" step="0.1" value="0%"
                                     data-value="0.00" data-append="%">
                                 <div class="input-group-append">
@@ -297,7 +305,7 @@
                                     <button class="btn btn-primary " type="button" data-counter="sub"
                                         data-field="balance_fee_percentage">−</button>
                                 </div>
-                                <input class="form-control text-center" id="balance_fee_percentage" type="text"
+                                <input class="form-control text-center " id="balance_fee_percentage" type="text"
                                     name="balance_fee_percentage" min="0" max="50" step="0.05" value="0%"
                                     data-value="0.00" data-append="%">
                                 <div class="input-group-append">
@@ -336,8 +344,57 @@
                     </div>
                 </div>
             </div>
+            <br>
+            <div id="calcResults" class="flex">
+                <div class="result">
+                    <div class="headline">סכום ההפקדה הכולל: </div>
+                    <div id="res6" class="ans">
+                    </div>
+                </div>
+                <div class="result">
+                    <div class="headline">רווח כולל:</div>
+                    <div id="res7" class="ans"></div>
+                </div>
+
+                <div class="result savings" id="futureGains">
+                    <div class="headline">סכום חיסכון עתידי:</div>
+                    <div id="res1" class="ans">
+                    </div>
+                </div>
+                <div class="result displayToggle losses">
+                    <div class="headline ">סך דמי ניהול מההפקדה:</div>
+                    <div id="res2" class="ans">
+                    </div>
+                </div>
+                <div class="result displayToggle losses">
+                    <div class="headline ">סך דמי ניהול מצבירה:</div>
+                    <div id="res3" class="ans">
+                    </div>
+                </div>
+                <div class="result displayToggle losses">
+                    <div class="headline ">אבדן רווח עקב גביית דמי ניהול:</div>
+                    <div id="res5" class="ans">
+                    </div>
+                </div>
+                <div class="result displayToggle savings">
+                    <div class="headline">סכום חיסכון עתידי משוער בניכוי דמי ניהול:</div>
+                    <div id="res4" class="ans">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-6 text-center" id="graph">
+
+            <div class="savings">סכום חיסכון עתידי </div>
+            <div class="h3" id="future_balance">?</div>
+            <canvas id="myChart"></canvas>
 
         </div>
+
+
+
+
     </div>
 
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.3/css/bootstrap.css"></script> -->
