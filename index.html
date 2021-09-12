@@ -94,6 +94,11 @@
 
         }
 
+        .result .headline span {
+            font-size: small;
+            color: grey;
+        }
+
         .result .ans {
             font-weight: normal;
             margin: 0;
@@ -186,7 +191,9 @@
 
         #graph {
             margin-top: 20px;
-            max-width: 80vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
 
         }
 
@@ -204,8 +211,9 @@
                 width: 90vw;
             }
 
-            #myChart {
-                width: 80vw;
+            #graph {
+                width: 100vw;
+
             }
 
             #calcResults {
@@ -215,6 +223,8 @@
             #calc {
                 width: 50vw;
             }
+
+
         }
     </style>
 </head>
@@ -416,7 +426,8 @@
                     </div>
                 </div>
                 <div class="result displayToggle savings">
-                    <div class="headline">סכום חיסכון עתידי משוער בניכוי דמי ניהול:</div>
+                    <div class="headline" dir="rtl"> סכום חיסכון עתידי משוער : <br /><span>*בניכוי דמי ניהול</span>
+                    </div>
                     <div id="res4" class="ans">
                     </div>
                 </div>
