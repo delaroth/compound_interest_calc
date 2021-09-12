@@ -1,17 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" dir="rtl">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
+    <title>Compound Interest Calculator</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
     <!-- <script src="https://kit.fontawesome.com/03e7242fb8.js" crossorigin="anonymous"></script> -->
     <style>
         body {
-            margin-top: 5px;
+            margin: 0;
+            padding: 0;
+
+
         }
 
         .flex {
@@ -131,22 +135,28 @@
             font-weight: 500;
         }
 
+
         #inputOutput {
             width: min-content;
-            width: 50%;
+            width: 40%;
             min-width: 700px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            flex-shrink: none;
+            margin-right: 20px;
 
         }
+
 
         .container {
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
             justify-content: center;
-            width: 90%;
+            width: 100%;
+            margin: auto;
+
 
         }
 
@@ -176,6 +186,35 @@
 
         #graph {
             margin-top: 20px;
+            max-width: 80vw;
+
+        }
+
+        @media screen and (max-width: 700px) {
+            #inputOutput {
+                width: min-content;
+                width: 100vw;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+
+            }
+
+            .form-group {
+                width: 90vw;
+            }
+
+            #myChart {
+                width: 80vw;
+            }
+
+            #calcResults {
+                width: 100vw;
+            }
+
+            #calc {
+                width: 50vw;
+            }
         }
     </style>
 </head>
