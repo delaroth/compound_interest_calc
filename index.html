@@ -58,10 +58,10 @@
 
 
         #calc {
-            /* margin-right: 1vw; */
+            /* margin-right: 20px; */
             max-width: 40%;
             width: 50vw;
-            /* margin: auto; */
+            margin: auto;
             margin-top: 15px;
 
             background-color: #FFDE59;
@@ -156,7 +156,8 @@
             flex-direction: column;
             justify-content: space-between;
             flex-shrink: none;
-            margin-right: 20px;
+            /* margin-right: 20px; */
+            margin-top: 20px;
         }
 
 
@@ -192,10 +193,7 @@
 
 
 
-        h1 {
-            text-align: center;
-            margin: 40px;
-        }
+
 
         #graph {
             margin-top: 20px;
@@ -206,7 +204,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-right: 50px;
+
 
         }
 
@@ -227,24 +225,45 @@
                 max-height: none;
             }
 
-            #graph,
-            h1 {
-                margin-right: 65px;
-            }
+
         }
 
         @media screen and (max-width: 300px) {
 
             #graph {
+                max-width: 100vw;
 
-                margin-right: 100px;
+            }
+        }
+
+        @media screen and (max-width: 250px) {
+
+
+            .result .ans {
+                font-size: small;
+            }
+
+            .result .headline {
+                font-size: xx-small
+            }
+        }
+
+        @media screen and (max-width: 150px) {
+
+
+            .result .ans {
+                font-size: x-small;
+            }
+
+            .result .headline {
+                font-size: xx-small
             }
         }
     </style>
 </head>
 
 <body dir="rtl">
-    <h1>מחשבון ריבית דריבית</h1>
+
     <div class="container">
         <div class="row" dir="rtl" id="inputOutput">
 
@@ -258,8 +277,8 @@
                                     data-field="initial_deposit">−</button>
                             </div>
                             <input class="form-control text-center " id="initial_deposit" type="text" dir="ltr"
-                                name="initial_deposit" min="0" max="10000000" step="100" value="₪ 10000"
-                                data-value="10000" data-prepend="₪ ">
+                                name="initial_deposit" min="0" max="10000000" step="100" value="₪ 0" data-value="0"
+                                data-prepend="₪ ">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button" data-counter="add"
                                     data-field="initial_deposit">+</button>
@@ -277,7 +296,7 @@
                                     data-field="contribution_amount">−</button>
                             </div>
                             <input class="form-control text-center " id="contribution_amount" type="text" dir="ltr"
-                                name="contribution_amount" min="0" max="50000" step="50" value="₪ 0 " data-value="0"
+                                name="contribution_amount" min="0" max="50000" step="50" value="₪ 500 " data-value="500"
                                 data-prepend="₪ ">
                             <div class="input-group-append">
                                 <button class="btn btn-primary " type="button" data-counter="add"
@@ -735,7 +754,14 @@
                                 ticks: {
                                     callback: function (value) {
                                         return '₪' + value;
+                                    },
+                                    userCallback: function (label, index, labels) {
+                                        // when the floored value is the same as the value we have a whole number
+                                        if (Math.floor(label) === label) {
+                                            return label;
+                                        }
                                     }
+
                                 },
                                 scaleLabel: {
                                     display: true,
